@@ -82,8 +82,7 @@ public class Crypto {
 
     public static boolean verifySignatures(ImmutableBlock block) {
         for (int i = 0; i < block.signatures.length; i++) {
-            boolean isVerified = Crypto.verifySignature(block.signatures[i].p, block.rootHash,
-                    block.signatures[i].s);
+            boolean isVerified = Crypto.verifySignature(block.signatures[i].p, block.rootHash, block.signatures[i].s);
             if (!isVerified)
                 return false;
         }
