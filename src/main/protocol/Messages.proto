@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.elbloquecadena.messages;
+
+
+
+
+// Socket interface Messages
+message Message {
+	oneof value {
+		MsgPing ping = 1;
+		MsgPong pong = 2;
+		MsgPeerDiscovery peerdiscovery = 3;
+		MsgPeerExchange peerexchange = 4;
+	}
+}
+
+message MsgPing {
+	string msgid = 1;
+}
+
+message MsgPong {
+	string msgid = 1;
+}
+
+message MsgPeerDiscovery {
+	string msgid = 1;
+}
+
+message MsgPeerExchange {
+	string msgid = 1;
+	repeated Peer peers = 2;
+}
+
+
+// Data Types
+
+message Peer {
+	string host = 1;
+	int32 port = 2;
+	bytes pubkey = 3;
+}

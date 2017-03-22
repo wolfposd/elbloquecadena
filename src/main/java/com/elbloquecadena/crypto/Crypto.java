@@ -1,5 +1,6 @@
 package com.elbloquecadena.crypto;
 
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -32,6 +33,8 @@ public class Crypto {
     private static final String ECDSA = "ECDSA";
     private static final String SHA256_WITH_ECDSA = "SHA256withECDSA";
     private static final String CURVE_NAME = "curve25519";
+    
+    private static SecureRandom random = new SecureRandom();
 
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -106,6 +109,10 @@ public class Crypto {
                 return false;
         }
         return true;
+    }
+
+    public static String randomString(int length) {
+        return new BigInteger(length * 5, random).toString(32);
     }
 
 }

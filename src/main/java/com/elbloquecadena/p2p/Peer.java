@@ -1,6 +1,8 @@
 package com.elbloquecadena.p2p;
 
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Peer representation
@@ -48,6 +50,27 @@ public class Peer {
 
     public Socket getSocket() {
         return socket;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(publicKey);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        else if (this == obj)
+            return true;
+        else if (obj instanceof Peer) {
+            Peer other = (Peer) obj;
+            return Objects.equals(hostAddress, other.hostAddress) //
+                    && portNumber == other.portNumber //
+                    // && Objects.equals(socket, other.socket) // not sure if sockets need to equal?
+                    && Objects.deepEquals(publicKey, other.publicKey);
+        } else
+            return false;
     }
 
 }
