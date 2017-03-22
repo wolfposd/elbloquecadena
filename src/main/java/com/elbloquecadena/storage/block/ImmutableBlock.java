@@ -46,4 +46,9 @@ public class ImmutableBlock {
         }
 
     }
+
+    @Override
+    public int hashCode() {
+        return blockHash.hashCode();
+    }
 }
