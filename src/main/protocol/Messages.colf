@@ -1,0 +1,36 @@
+package messages
+
+
+type Message struct {
+	ping MsgPing
+	pong MsgPong
+	peerdiscovery MsgPeerDiscovery
+	peerexchange MsgPeerExchange
+}
+
+// signals a Ping to another peer
+type MsgPing struct {
+    msgid text
+}
+// pings must be answered with pong
+type MsgPong struct {
+    msgid text 
+}
+
+// a Peer asks for other Peers
+type MsgPeerDiscovery struct {
+    msgid text
+}
+
+// answer with own addressbook
+type MsgPeerExchange struct {
+    msgid text
+    peers []MsgPeer
+}
+
+// peer class
+type MsgPeer struct {
+    host text
+    port int32
+    pubkey binary
+}
