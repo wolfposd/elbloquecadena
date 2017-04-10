@@ -12,6 +12,7 @@ message Message {
 		MsgPong pong = 2;
 		MsgPeerDiscovery peerdiscovery = 3;
 		MsgPeerExchange peerexchange = 4;
+		MsgHello hello = 5;
 	}
 }
 
@@ -29,13 +30,17 @@ message MsgPeerDiscovery {
 
 message MsgPeerExchange {
 	string msgid = 1;
-	repeated Peer peers = 2;
+	repeated MPeer peers = 2;
+}
+
+message MsgHello {
+	MPeer myself = 1;
 }
 
 
 // Data Types
 
-message Peer {
+message MPeer {
 	string host = 1;
 	int32 port = 2;
 	bytes pubkey = 3;

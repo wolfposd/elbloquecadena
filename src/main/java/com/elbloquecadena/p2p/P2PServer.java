@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.elbloquecadena.messages.Messages.Message;
 import com.elbloquecadena.messages.Messages.MsgPing;
 import com.elbloquecadena.messages.Messages.MsgPong;
+import com.elbloquecadena.p2p.observers.MessagesHandler;
+import com.elbloquecadena.p2p.observers.ServerEvents;
 
 /**
  * Peer2Peer server socket class
@@ -36,13 +38,16 @@ public class P2PServer {
 
     private MessagesHandler mHandler;
 
+    private ServerEvents serverEvents;
+
     public P2PServer() {
         this.serverPortNumber = DEFAULT_SERVER_PORT;
     }
 
-    public P2PServer(int portNumber, MessagesHandler handler) {
+    public P2PServer(int portNumber, MessagesHandler mHandler, ServerEvents serverEvents) {
         this.serverPortNumber = portNumber;
-        this.mHandler = handler;
+        this.mHandler = mHandler;
+        this.serverEvents = serverEvents;
     }
 
     public void start() {
@@ -58,6 +63,7 @@ public class P2PServer {
                     new Thread(handler).start();
                     serverSockets.add(serverSocket);
                     System.out.println("started new connection");
+                    serverEvents.onClientConnectsToServer(clientSocket);
                 }
             }
         } catch (IOException e) {

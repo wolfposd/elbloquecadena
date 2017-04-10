@@ -1,4 +1,4 @@
-package com.elbloquecadena.p2p;
+package com.elbloquecadena.p2p.observers;
 
 import java.net.Socket;
 

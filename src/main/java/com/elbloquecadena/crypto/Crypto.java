@@ -17,10 +17,12 @@ import java.security.SignatureException;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.crypto.ec.CustomNamedCurves;
 import org.bouncycastle.jce.ECPointUtil;
+import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 import org.bouncycastle.jce.spec.ECParameterSpec;
@@ -33,7 +35,7 @@ public class Crypto {
     private static final String ECDSA = "ECDSA";
     private static final String SHA256_WITH_ECDSA = "SHA256withECDSA";
     private static final String CURVE_NAME = "curve25519";
-    
+
     private static SecureRandom random = new SecureRandom();
 
     static {
@@ -54,6 +56,10 @@ public class Crypto {
         return null;
     }
 
+    public static byte[] compressedKey(PublicKey key) {
+        return ((ECPublicKey) key).getQ().getEncoded(true);
+    }
+
     public static byte[] signMessage(PrivateKey key, byte[] message) {
 
         try {
@@ -68,22 +74,40 @@ public class Crypto {
         return null;
     }
 
-    public static PublicKey getPublicKeyFromBytes(byte[] pubKey)
-            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+    private static ECPublicKeySpec getKeySpec(byte[] pubOrPrivKey) {
         X9ECParameters ecP = CustomNamedCurves.getByName(CURVE_NAME);
         ECParameterSpec ecSpec = new ECParameterSpec(ecP.getCurve(), ecP.getG(), ecP.getN(), ecP.getH(), ecP.getSeed());
-        KeyFactory kf = KeyFactory.getInstance(ECDSA, PROVIDER);
         ECNamedCurveSpec params = new ECNamedCurveSpec(CURVE_NAME, ecSpec.getCurve(), ecSpec.getG(), ecSpec.getN());
-        ECPoint point = ECPointUtil.decodePoint(params.getCurve(), pubKey);
-        ECPublicKeySpec pubKeySpec = new ECPublicKeySpec(point, params);
-        return kf.generatePublic(pubKeySpec);
+        ECPoint point = ECPointUtil.decodePoint(params.getCurve(), pubOrPrivKey);
+        ECPublicKeySpec keySpec = new ECPublicKeySpec(point, params);
+        return keySpec;
+    }
+
+    public static PrivateKey getPrivateKeyFromBytes(byte[] privKey) throws CryptoException {
+        try {
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privKey);
+            KeyFactory factory = KeyFactory.getInstance("ECDSA");
+            PrivateKey privateKey = factory.generatePrivate(spec);
+            return privateKey;
+        } catch (Exception e) {
+            throw new CryptoException(e);
+        }
+    }
+
+    public static PublicKey getPublicKeyFromBytes(byte[] pubKey) throws CryptoException {
+        try {
+            KeyFactory kf = KeyFactory.getInstance(ECDSA, PROVIDER);
+            return kf.generatePublic(getKeySpec(pubKey));
+        } catch (Exception e) {
+            throw new CryptoException(e);
+        }
     }
 
     public static boolean verifySignature(byte[] compressedPublicKey, byte[] message, byte[] signature) {
         try {
             PublicKey publicKey = getPublicKeyFromBytes(compressedPublicKey);
             return verifySignature(publicKey, message, signature);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
+        } catch (CryptoException e) {
             e.printStackTrace();
         }
         return false;

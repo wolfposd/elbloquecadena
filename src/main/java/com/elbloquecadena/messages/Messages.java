@@ -54,6 +54,15 @@ public final class Messages {
      */
     com.elbloquecadena.messages.Messages.MsgPeerExchangeOrBuilder getPeerexchangeOrBuilder();
 
+    /**
+     * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+     */
+    com.elbloquecadena.messages.Messages.MsgHello getHello();
+    /**
+     * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+     */
+    com.elbloquecadena.messages.Messages.MsgHelloOrBuilder getHelloOrBuilder();
+
     public com.elbloquecadena.messages.Messages.Message.ValueCase getValueCase();
   }
   /**
@@ -155,6 +164,20 @@ public final class Messages {
               valueCase_ = 4;
               break;
             }
+            case 42: {
+              com.elbloquecadena.messages.Messages.MsgHello.Builder subBuilder = null;
+              if (valueCase_ == 5) {
+                subBuilder = ((com.elbloquecadena.messages.Messages.MsgHello) value_).toBuilder();
+              }
+              value_ =
+                  input.readMessage(com.elbloquecadena.messages.Messages.MsgHello.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((com.elbloquecadena.messages.Messages.MsgHello) value_);
+                value_ = subBuilder.buildPartial();
+              }
+              valueCase_ = 5;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -186,6 +209,7 @@ public final class Messages {
       PONG(2),
       PEERDISCOVERY(3),
       PEEREXCHANGE(4),
+      HELLO(5),
       VALUE_NOT_SET(0);
       private final int value;
       private ValueCase(int value) {
@@ -205,6 +229,7 @@ public final class Messages {
           case 2: return PONG;
           case 3: return PEERDISCOVERY;
           case 4: return PEEREXCHANGE;
+          case 5: return HELLO;
           case 0: return VALUE_NOT_SET;
           default: return null;
         }
@@ -300,6 +325,26 @@ public final class Messages {
       return com.elbloquecadena.messages.Messages.MsgPeerExchange.getDefaultInstance();
     }
 
+    public static final int HELLO_FIELD_NUMBER = 5;
+    /**
+     * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+     */
+    public com.elbloquecadena.messages.Messages.MsgHello getHello() {
+      if (valueCase_ == 5) {
+         return (com.elbloquecadena.messages.Messages.MsgHello) value_;
+      }
+      return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+    }
+    /**
+     * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+     */
+    public com.elbloquecadena.messages.Messages.MsgHelloOrBuilder getHelloOrBuilder() {
+      if (valueCase_ == 5) {
+         return (com.elbloquecadena.messages.Messages.MsgHello) value_;
+      }
+      return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -324,6 +369,9 @@ public final class Messages {
       if (valueCase_ == 4) {
         output.writeMessage(4, (com.elbloquecadena.messages.Messages.MsgPeerExchange) value_);
       }
+      if (valueCase_ == 5) {
+        output.writeMessage(5, (com.elbloquecadena.messages.Messages.MsgHello) value_);
+      }
     }
 
     public int getSerializedSize() {
@@ -346,6 +394,10 @@ public final class Messages {
       if (valueCase_ == 4) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, (com.elbloquecadena.messages.Messages.MsgPeerExchange) value_);
+      }
+      if (valueCase_ == 5) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, (com.elbloquecadena.messages.Messages.MsgHello) value_);
       }
       memoizedSize = size;
       return size;
@@ -383,6 +435,10 @@ public final class Messages {
           result = result && getPeerexchange()
               .equals(other.getPeerexchange());
           break;
+        case 5:
+          result = result && getHello()
+              .equals(other.getHello());
+          break;
         case 0:
         default:
       }
@@ -412,6 +468,10 @@ public final class Messages {
         case 4:
           hash = (37 * hash) + PEEREXCHANGE_FIELD_NUMBER;
           hash = (53 * hash) + getPeerexchange().hashCode();
+          break;
+        case 5:
+          hash = (37 * hash) + HELLO_FIELD_NUMBER;
+          hash = (53 * hash) + getHello().hashCode();
           break;
         case 0:
         default:
@@ -590,6 +650,13 @@ public final class Messages {
             result.value_ = peerexchangeBuilder_.build();
           }
         }
+        if (valueCase_ == 5) {
+          if (helloBuilder_ == null) {
+            result.value_ = value_;
+          } else {
+            result.value_ = helloBuilder_.build();
+          }
+        }
         result.valueCase_ = valueCase_;
         onBuilt();
         return result;
@@ -647,6 +714,10 @@ public final class Messages {
           }
           case PEEREXCHANGE: {
             mergePeerexchange(other.getPeerexchange());
+            break;
+          }
+          case HELLO: {
+            mergeHello(other.getHello());
             break;
           }
           case VALUE_NOT_SET: {
@@ -1212,6 +1283,136 @@ public final class Messages {
         valueCase_ = 4;
         onChanged();;
         return peerexchangeBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.elbloquecadena.messages.Messages.MsgHello, com.elbloquecadena.messages.Messages.MsgHello.Builder, com.elbloquecadena.messages.Messages.MsgHelloOrBuilder> helloBuilder_;
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MsgHello getHello() {
+        if (helloBuilder_ == null) {
+          if (valueCase_ == 5) {
+            return (com.elbloquecadena.messages.Messages.MsgHello) value_;
+          }
+          return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+        } else {
+          if (valueCase_ == 5) {
+            return helloBuilder_.getMessage();
+          }
+          return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public Builder setHello(com.elbloquecadena.messages.Messages.MsgHello value) {
+        if (helloBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          value_ = value;
+          onChanged();
+        } else {
+          helloBuilder_.setMessage(value);
+        }
+        valueCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public Builder setHello(
+          com.elbloquecadena.messages.Messages.MsgHello.Builder builderForValue) {
+        if (helloBuilder_ == null) {
+          value_ = builderForValue.build();
+          onChanged();
+        } else {
+          helloBuilder_.setMessage(builderForValue.build());
+        }
+        valueCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public Builder mergeHello(com.elbloquecadena.messages.Messages.MsgHello value) {
+        if (helloBuilder_ == null) {
+          if (valueCase_ == 5 &&
+              value_ != com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance()) {
+            value_ = com.elbloquecadena.messages.Messages.MsgHello.newBuilder((com.elbloquecadena.messages.Messages.MsgHello) value_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            value_ = value;
+          }
+          onChanged();
+        } else {
+          if (valueCase_ == 5) {
+            helloBuilder_.mergeFrom(value);
+          }
+          helloBuilder_.setMessage(value);
+        }
+        valueCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public Builder clearHello() {
+        if (helloBuilder_ == null) {
+          if (valueCase_ == 5) {
+            valueCase_ = 0;
+            value_ = null;
+            onChanged();
+          }
+        } else {
+          if (valueCase_ == 5) {
+            valueCase_ = 0;
+            value_ = null;
+          }
+          helloBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MsgHello.Builder getHelloBuilder() {
+        return getHelloFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MsgHelloOrBuilder getHelloOrBuilder() {
+        if ((valueCase_ == 5) && (helloBuilder_ != null)) {
+          return helloBuilder_.getMessageOrBuilder();
+        } else {
+          if (valueCase_ == 5) {
+            return (com.elbloquecadena.messages.Messages.MsgHello) value_;
+          }
+          return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MsgHello hello = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.elbloquecadena.messages.Messages.MsgHello, com.elbloquecadena.messages.Messages.MsgHello.Builder, com.elbloquecadena.messages.Messages.MsgHelloOrBuilder> 
+          getHelloFieldBuilder() {
+        if (helloBuilder_ == null) {
+          if (!(valueCase_ == 5)) {
+            value_ = com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+          }
+          helloBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.elbloquecadena.messages.Messages.MsgHello, com.elbloquecadena.messages.Messages.MsgHello.Builder, com.elbloquecadena.messages.Messages.MsgHelloOrBuilder>(
+                  (com.elbloquecadena.messages.Messages.MsgHello) value_,
+                  getParentForChildren(),
+                  isClean());
+          value_ = null;
+        }
+        valueCase_ = 5;
+        onChanged();;
+        return helloBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2786,27 +2987,27 @@ public final class Messages {
         getMsgidBytes();
 
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    java.util.List<com.elbloquecadena.messages.Messages.Peer> 
+    java.util.List<com.elbloquecadena.messages.Messages.MPeer> 
         getPeersList();
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    com.elbloquecadena.messages.Messages.Peer getPeers(int index);
+    com.elbloquecadena.messages.Messages.MPeer getPeers(int index);
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
     int getPeersCount();
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    java.util.List<? extends com.elbloquecadena.messages.Messages.PeerOrBuilder> 
+    java.util.List<? extends com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
         getPeersOrBuilderList();
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    com.elbloquecadena.messages.Messages.PeerOrBuilder getPeersOrBuilder(
+    com.elbloquecadena.messages.Messages.MPeerOrBuilder getPeersOrBuilder(
         int index);
   }
   /**
@@ -2858,11 +3059,11 @@ public final class Messages {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                peers_ = new java.util.ArrayList<com.elbloquecadena.messages.Messages.Peer>();
+                peers_ = new java.util.ArrayList<com.elbloquecadena.messages.Messages.MPeer>();
                 mutable_bitField0_ |= 0x00000002;
               }
               peers_.add(
-                  input.readMessage(com.elbloquecadena.messages.Messages.Peer.parser(), extensionRegistry));
+                  input.readMessage(com.elbloquecadena.messages.Messages.MPeer.parser(), extensionRegistry));
               break;
             }
           }
@@ -2927,36 +3128,36 @@ public final class Messages {
     }
 
     public static final int PEERS_FIELD_NUMBER = 2;
-    private java.util.List<com.elbloquecadena.messages.Messages.Peer> peers_;
+    private java.util.List<com.elbloquecadena.messages.Messages.MPeer> peers_;
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    public java.util.List<com.elbloquecadena.messages.Messages.Peer> getPeersList() {
+    public java.util.List<com.elbloquecadena.messages.Messages.MPeer> getPeersList() {
       return peers_;
     }
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    public java.util.List<? extends com.elbloquecadena.messages.Messages.PeerOrBuilder> 
+    public java.util.List<? extends com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
         getPeersOrBuilderList() {
       return peers_;
     }
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
     public int getPeersCount() {
       return peers_.size();
     }
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    public com.elbloquecadena.messages.Messages.Peer getPeers(int index) {
+    public com.elbloquecadena.messages.Messages.MPeer getPeers(int index) {
       return peers_.get(index);
     }
     /**
-     * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+     * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
      */
-    public com.elbloquecadena.messages.Messages.PeerOrBuilder getPeersOrBuilder(
+    public com.elbloquecadena.messages.Messages.MPeerOrBuilder getPeersOrBuilder(
         int index) {
       return peers_.get(index);
     }
@@ -3358,22 +3559,22 @@ public final class Messages {
         return this;
       }
 
-      private java.util.List<com.elbloquecadena.messages.Messages.Peer> peers_ =
+      private java.util.List<com.elbloquecadena.messages.Messages.MPeer> peers_ =
         java.util.Collections.emptyList();
       private void ensurePeersIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          peers_ = new java.util.ArrayList<com.elbloquecadena.messages.Messages.Peer>(peers_);
+          peers_ = new java.util.ArrayList<com.elbloquecadena.messages.Messages.MPeer>(peers_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.elbloquecadena.messages.Messages.Peer, com.elbloquecadena.messages.Messages.Peer.Builder, com.elbloquecadena.messages.Messages.PeerOrBuilder> peersBuilder_;
+          com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> peersBuilder_;
 
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public java.util.List<com.elbloquecadena.messages.Messages.Peer> getPeersList() {
+      public java.util.List<com.elbloquecadena.messages.Messages.MPeer> getPeersList() {
         if (peersBuilder_ == null) {
           return java.util.Collections.unmodifiableList(peers_);
         } else {
@@ -3381,7 +3582,7 @@ public final class Messages {
         }
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public int getPeersCount() {
         if (peersBuilder_ == null) {
@@ -3391,9 +3592,9 @@ public final class Messages {
         }
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public com.elbloquecadena.messages.Messages.Peer getPeers(int index) {
+      public com.elbloquecadena.messages.Messages.MPeer getPeers(int index) {
         if (peersBuilder_ == null) {
           return peers_.get(index);
         } else {
@@ -3401,10 +3602,10 @@ public final class Messages {
         }
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder setPeers(
-          int index, com.elbloquecadena.messages.Messages.Peer value) {
+          int index, com.elbloquecadena.messages.Messages.MPeer value) {
         if (peersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3418,10 +3619,10 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder setPeers(
-          int index, com.elbloquecadena.messages.Messages.Peer.Builder builderForValue) {
+          int index, com.elbloquecadena.messages.Messages.MPeer.Builder builderForValue) {
         if (peersBuilder_ == null) {
           ensurePeersIsMutable();
           peers_.set(index, builderForValue.build());
@@ -3432,9 +3633,9 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public Builder addPeers(com.elbloquecadena.messages.Messages.Peer value) {
+      public Builder addPeers(com.elbloquecadena.messages.Messages.MPeer value) {
         if (peersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3448,10 +3649,10 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder addPeers(
-          int index, com.elbloquecadena.messages.Messages.Peer value) {
+          int index, com.elbloquecadena.messages.Messages.MPeer value) {
         if (peersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3465,10 +3666,10 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder addPeers(
-          com.elbloquecadena.messages.Messages.Peer.Builder builderForValue) {
+          com.elbloquecadena.messages.Messages.MPeer.Builder builderForValue) {
         if (peersBuilder_ == null) {
           ensurePeersIsMutable();
           peers_.add(builderForValue.build());
@@ -3479,10 +3680,10 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder addPeers(
-          int index, com.elbloquecadena.messages.Messages.Peer.Builder builderForValue) {
+          int index, com.elbloquecadena.messages.Messages.MPeer.Builder builderForValue) {
         if (peersBuilder_ == null) {
           ensurePeersIsMutable();
           peers_.add(index, builderForValue.build());
@@ -3493,10 +3694,10 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder addAllPeers(
-          java.lang.Iterable<? extends com.elbloquecadena.messages.Messages.Peer> values) {
+          java.lang.Iterable<? extends com.elbloquecadena.messages.Messages.MPeer> values) {
         if (peersBuilder_ == null) {
           ensurePeersIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3508,7 +3709,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder clearPeers() {
         if (peersBuilder_ == null) {
@@ -3521,7 +3722,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
       public Builder removePeers(int index) {
         if (peersBuilder_ == null) {
@@ -3534,16 +3735,16 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public com.elbloquecadena.messages.Messages.Peer.Builder getPeersBuilder(
+      public com.elbloquecadena.messages.Messages.MPeer.Builder getPeersBuilder(
           int index) {
         return getPeersFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public com.elbloquecadena.messages.Messages.PeerOrBuilder getPeersOrBuilder(
+      public com.elbloquecadena.messages.Messages.MPeerOrBuilder getPeersOrBuilder(
           int index) {
         if (peersBuilder_ == null) {
           return peers_.get(index);  } else {
@@ -3551,9 +3752,9 @@ public final class Messages {
         }
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public java.util.List<? extends com.elbloquecadena.messages.Messages.PeerOrBuilder> 
+      public java.util.List<? extends com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
            getPeersOrBuilderList() {
         if (peersBuilder_ != null) {
           return peersBuilder_.getMessageOrBuilderList();
@@ -3562,33 +3763,33 @@ public final class Messages {
         }
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public com.elbloquecadena.messages.Messages.Peer.Builder addPeersBuilder() {
+      public com.elbloquecadena.messages.Messages.MPeer.Builder addPeersBuilder() {
         return getPeersFieldBuilder().addBuilder(
-            com.elbloquecadena.messages.Messages.Peer.getDefaultInstance());
+            com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public com.elbloquecadena.messages.Messages.Peer.Builder addPeersBuilder(
+      public com.elbloquecadena.messages.Messages.MPeer.Builder addPeersBuilder(
           int index) {
         return getPeersFieldBuilder().addBuilder(
-            index, com.elbloquecadena.messages.Messages.Peer.getDefaultInstance());
+            index, com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.elbloquecadena.messages.Peer peers = 2;</code>
+       * <code>repeated .com.elbloquecadena.messages.MPeer peers = 2;</code>
        */
-      public java.util.List<com.elbloquecadena.messages.Messages.Peer.Builder> 
+      public java.util.List<com.elbloquecadena.messages.Messages.MPeer.Builder> 
            getPeersBuilderList() {
         return getPeersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.elbloquecadena.messages.Messages.Peer, com.elbloquecadena.messages.Messages.Peer.Builder, com.elbloquecadena.messages.Messages.PeerOrBuilder> 
+          com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
           getPeersFieldBuilder() {
         if (peersBuilder_ == null) {
           peersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.elbloquecadena.messages.Messages.Peer, com.elbloquecadena.messages.Messages.Peer.Builder, com.elbloquecadena.messages.Messages.PeerOrBuilder>(
+              com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder>(
                   peers_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -3646,8 +3847,568 @@ public final class Messages {
 
   }
 
-  public interface PeerOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.elbloquecadena.messages.Peer)
+  public interface MsgHelloOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.elbloquecadena.messages.MsgHello)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    boolean hasMyself();
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    com.elbloquecadena.messages.Messages.MPeer getMyself();
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.elbloquecadena.messages.MsgHello}
+   */
+  public  static final class MsgHello extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.elbloquecadena.messages.MsgHello)
+      MsgHelloOrBuilder {
+    // Use MsgHello.newBuilder() to construct.
+    private MsgHello(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private MsgHello() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private MsgHello(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.elbloquecadena.messages.Messages.MPeer.Builder subBuilder = null;
+              if (myself_ != null) {
+                subBuilder = myself_.toBuilder();
+              }
+              myself_ = input.readMessage(com.elbloquecadena.messages.Messages.MPeer.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(myself_);
+                myself_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MsgHello_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MsgHello_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.elbloquecadena.messages.Messages.MsgHello.class, com.elbloquecadena.messages.Messages.MsgHello.Builder.class);
+    }
+
+    public static final int MYSELF_FIELD_NUMBER = 1;
+    private com.elbloquecadena.messages.Messages.MPeer myself_;
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    public boolean hasMyself() {
+      return myself_ != null;
+    }
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    public com.elbloquecadena.messages.Messages.MPeer getMyself() {
+      return myself_ == null ? com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance() : myself_;
+    }
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     */
+    public com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder() {
+      return getMyself();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (myself_ != null) {
+        output.writeMessage(1, getMyself());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (myself_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getMyself());
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.elbloquecadena.messages.Messages.MsgHello)) {
+        return super.equals(obj);
+      }
+      com.elbloquecadena.messages.Messages.MsgHello other = (com.elbloquecadena.messages.Messages.MsgHello) obj;
+
+      boolean result = true;
+      result = result && (hasMyself() == other.hasMyself());
+      if (hasMyself()) {
+        result = result && getMyself()
+            .equals(other.getMyself());
+      }
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMyself()) {
+        hash = (37 * hash) + MYSELF_FIELD_NUMBER;
+        hash = (53 * hash) + getMyself().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.elbloquecadena.messages.Messages.MsgHello parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.elbloquecadena.messages.Messages.MsgHello prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.elbloquecadena.messages.MsgHello}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.elbloquecadena.messages.MsgHello)
+        com.elbloquecadena.messages.Messages.MsgHelloOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MsgHello_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MsgHello_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.elbloquecadena.messages.Messages.MsgHello.class, com.elbloquecadena.messages.Messages.MsgHello.Builder.class);
+      }
+
+      // Construct using com.elbloquecadena.messages.Messages.MsgHello.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (myselfBuilder_ == null) {
+          myself_ = null;
+        } else {
+          myself_ = null;
+          myselfBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MsgHello_descriptor;
+      }
+
+      public com.elbloquecadena.messages.Messages.MsgHello getDefaultInstanceForType() {
+        return com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance();
+      }
+
+      public com.elbloquecadena.messages.Messages.MsgHello build() {
+        com.elbloquecadena.messages.Messages.MsgHello result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.elbloquecadena.messages.Messages.MsgHello buildPartial() {
+        com.elbloquecadena.messages.Messages.MsgHello result = new com.elbloquecadena.messages.Messages.MsgHello(this);
+        if (myselfBuilder_ == null) {
+          result.myself_ = myself_;
+        } else {
+          result.myself_ = myselfBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.elbloquecadena.messages.Messages.MsgHello) {
+          return mergeFrom((com.elbloquecadena.messages.Messages.MsgHello)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.elbloquecadena.messages.Messages.MsgHello other) {
+        if (other == com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance()) return this;
+        if (other.hasMyself()) {
+          mergeMyself(other.getMyself());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.elbloquecadena.messages.Messages.MsgHello parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.elbloquecadena.messages.Messages.MsgHello) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.elbloquecadena.messages.Messages.MPeer myself_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> myselfBuilder_;
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public boolean hasMyself() {
+        return myselfBuilder_ != null || myself_ != null;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MPeer getMyself() {
+        if (myselfBuilder_ == null) {
+          return myself_ == null ? com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance() : myself_;
+        } else {
+          return myselfBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public Builder setMyself(com.elbloquecadena.messages.Messages.MPeer value) {
+        if (myselfBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          myself_ = value;
+          onChanged();
+        } else {
+          myselfBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public Builder setMyself(
+          com.elbloquecadena.messages.Messages.MPeer.Builder builderForValue) {
+        if (myselfBuilder_ == null) {
+          myself_ = builderForValue.build();
+          onChanged();
+        } else {
+          myselfBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public Builder mergeMyself(com.elbloquecadena.messages.Messages.MPeer value) {
+        if (myselfBuilder_ == null) {
+          if (myself_ != null) {
+            myself_ =
+              com.elbloquecadena.messages.Messages.MPeer.newBuilder(myself_).mergeFrom(value).buildPartial();
+          } else {
+            myself_ = value;
+          }
+          onChanged();
+        } else {
+          myselfBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public Builder clearMyself() {
+        if (myselfBuilder_ == null) {
+          myself_ = null;
+          onChanged();
+        } else {
+          myself_ = null;
+          myselfBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MPeer.Builder getMyselfBuilder() {
+        
+        onChanged();
+        return getMyselfFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      public com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder() {
+        if (myselfBuilder_ != null) {
+          return myselfBuilder_.getMessageOrBuilder();
+        } else {
+          return myself_ == null ?
+              com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance() : myself_;
+        }
+      }
+      /**
+       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
+          getMyselfFieldBuilder() {
+        if (myselfBuilder_ == null) {
+          myselfBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder>(
+                  getMyself(),
+                  getParentForChildren(),
+                  isClean());
+          myself_ = null;
+        }
+        return myselfBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.elbloquecadena.messages.MsgHello)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.elbloquecadena.messages.MsgHello)
+    private static final com.elbloquecadena.messages.Messages.MsgHello DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.elbloquecadena.messages.Messages.MsgHello();
+    }
+
+    public static com.elbloquecadena.messages.Messages.MsgHello getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<MsgHello>
+        PARSER = new com.google.protobuf.AbstractParser<MsgHello>() {
+      public MsgHello parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new MsgHello(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<MsgHello> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MsgHello> getParserForType() {
+      return PARSER;
+    }
+
+    public com.elbloquecadena.messages.Messages.MsgHello getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface MPeerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.elbloquecadena.messages.MPeer)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3671,17 +4432,17 @@ public final class Messages {
     com.google.protobuf.ByteString getPubkey();
   }
   /**
-   * Protobuf type {@code com.elbloquecadena.messages.Peer}
+   * Protobuf type {@code com.elbloquecadena.messages.MPeer}
    */
-  public  static final class Peer extends
+  public  static final class MPeer extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:com.elbloquecadena.messages.Peer)
-      PeerOrBuilder {
-    // Use Peer.newBuilder() to construct.
-    private Peer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:com.elbloquecadena.messages.MPeer)
+      MPeerOrBuilder {
+    // Use MPeer.newBuilder() to construct.
+    private MPeer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Peer() {
+    private MPeer() {
       host_ = "";
       port_ = 0;
       pubkey_ = com.google.protobuf.ByteString.EMPTY;
@@ -3692,7 +4453,7 @@ public final class Messages {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private Peer(
+    private MPeer(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3741,14 +4502,14 @@ public final class Messages {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_Peer_descriptor;
+      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MPeer_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_Peer_fieldAccessorTable
+      return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MPeer_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.elbloquecadena.messages.Messages.Peer.class, com.elbloquecadena.messages.Messages.Peer.Builder.class);
+              com.elbloquecadena.messages.Messages.MPeer.class, com.elbloquecadena.messages.Messages.MPeer.Builder.class);
     }
 
     public static final int HOST_FIELD_NUMBER = 1;
@@ -3852,10 +4613,10 @@ public final class Messages {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.elbloquecadena.messages.Messages.Peer)) {
+      if (!(obj instanceof com.elbloquecadena.messages.Messages.MPeer)) {
         return super.equals(obj);
       }
-      com.elbloquecadena.messages.Messages.Peer other = (com.elbloquecadena.messages.Messages.Peer) obj;
+      com.elbloquecadena.messages.Messages.MPeer other = (com.elbloquecadena.messages.Messages.MPeer) obj;
 
       boolean result = true;
       result = result && getHost()
@@ -3885,58 +4646,58 @@ public final class Messages {
       return hash;
     }
 
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(byte[] data)
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(java.io.InputStream input)
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseDelimitedFrom(java.io.InputStream input)
+    public static com.elbloquecadena.messages.Messages.MPeer parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseDelimitedFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.elbloquecadena.messages.Messages.Peer parseFrom(
+    public static com.elbloquecadena.messages.Messages.MPeer parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3948,7 +4709,7 @@ public final class Messages {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.elbloquecadena.messages.Messages.Peer prototype) {
+    public static Builder newBuilder(com.elbloquecadena.messages.Messages.MPeer prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -3963,25 +4724,25 @@ public final class Messages {
       return builder;
     }
     /**
-     * Protobuf type {@code com.elbloquecadena.messages.Peer}
+     * Protobuf type {@code com.elbloquecadena.messages.MPeer}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.elbloquecadena.messages.Peer)
-        com.elbloquecadena.messages.Messages.PeerOrBuilder {
+        // @@protoc_insertion_point(builder_implements:com.elbloquecadena.messages.MPeer)
+        com.elbloquecadena.messages.Messages.MPeerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_Peer_descriptor;
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MPeer_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_Peer_fieldAccessorTable
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MPeer_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.elbloquecadena.messages.Messages.Peer.class, com.elbloquecadena.messages.Messages.Peer.Builder.class);
+                com.elbloquecadena.messages.Messages.MPeer.class, com.elbloquecadena.messages.Messages.MPeer.Builder.class);
       }
 
-      // Construct using com.elbloquecadena.messages.Messages.Peer.newBuilder()
+      // Construct using com.elbloquecadena.messages.Messages.MPeer.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4009,23 +4770,23 @@ public final class Messages {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_Peer_descriptor;
+        return com.elbloquecadena.messages.Messages.internal_static_com_elbloquecadena_messages_MPeer_descriptor;
       }
 
-      public com.elbloquecadena.messages.Messages.Peer getDefaultInstanceForType() {
-        return com.elbloquecadena.messages.Messages.Peer.getDefaultInstance();
+      public com.elbloquecadena.messages.Messages.MPeer getDefaultInstanceForType() {
+        return com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance();
       }
 
-      public com.elbloquecadena.messages.Messages.Peer build() {
-        com.elbloquecadena.messages.Messages.Peer result = buildPartial();
+      public com.elbloquecadena.messages.Messages.MPeer build() {
+        com.elbloquecadena.messages.Messages.MPeer result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.elbloquecadena.messages.Messages.Peer buildPartial() {
-        com.elbloquecadena.messages.Messages.Peer result = new com.elbloquecadena.messages.Messages.Peer(this);
+      public com.elbloquecadena.messages.Messages.MPeer buildPartial() {
+        com.elbloquecadena.messages.Messages.MPeer result = new com.elbloquecadena.messages.Messages.MPeer(this);
         result.host_ = host_;
         result.port_ = port_;
         result.pubkey_ = pubkey_;
@@ -4060,16 +4821,16 @@ public final class Messages {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.elbloquecadena.messages.Messages.Peer) {
-          return mergeFrom((com.elbloquecadena.messages.Messages.Peer)other);
+        if (other instanceof com.elbloquecadena.messages.Messages.MPeer) {
+          return mergeFrom((com.elbloquecadena.messages.Messages.MPeer)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.elbloquecadena.messages.Messages.Peer other) {
-        if (other == com.elbloquecadena.messages.Messages.Peer.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.elbloquecadena.messages.Messages.MPeer other) {
+        if (other == com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance()) return this;
         if (!other.getHost().isEmpty()) {
           host_ = other.host_;
           onChanged();
@@ -4092,11 +4853,11 @@ public final class Messages {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.elbloquecadena.messages.Messages.Peer parsedMessage = null;
+        com.elbloquecadena.messages.Messages.MPeer parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.elbloquecadena.messages.Messages.Peer) e.getUnfinishedMessage();
+          parsedMessage = (com.elbloquecadena.messages.Messages.MPeer) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -4240,39 +5001,39 @@ public final class Messages {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:com.elbloquecadena.messages.Peer)
+      // @@protoc_insertion_point(builder_scope:com.elbloquecadena.messages.MPeer)
     }
 
-    // @@protoc_insertion_point(class_scope:com.elbloquecadena.messages.Peer)
-    private static final com.elbloquecadena.messages.Messages.Peer DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:com.elbloquecadena.messages.MPeer)
+    private static final com.elbloquecadena.messages.Messages.MPeer DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.elbloquecadena.messages.Messages.Peer();
+      DEFAULT_INSTANCE = new com.elbloquecadena.messages.Messages.MPeer();
     }
 
-    public static com.elbloquecadena.messages.Messages.Peer getDefaultInstance() {
+    public static com.elbloquecadena.messages.Messages.MPeer getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Peer>
-        PARSER = new com.google.protobuf.AbstractParser<Peer>() {
-      public Peer parsePartialFrom(
+    private static final com.google.protobuf.Parser<MPeer>
+        PARSER = new com.google.protobuf.AbstractParser<MPeer>() {
+      public MPeer parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Peer(input, extensionRegistry);
+          return new MPeer(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Peer> parser() {
+    public static com.google.protobuf.Parser<MPeer> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Peer> getParserForType() {
+    public com.google.protobuf.Parser<MPeer> getParserForType() {
       return PARSER;
     }
 
-    public com.elbloquecadena.messages.Messages.Peer getDefaultInstanceForType() {
+    public com.elbloquecadena.messages.Messages.MPeer getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4304,10 +5065,15 @@ public final class Messages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_elbloquecadena_messages_MsgPeerExchange_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_elbloquecadena_messages_Peer_descriptor;
+    internal_static_com_elbloquecadena_messages_MsgHello_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_elbloquecadena_messages_Peer_fieldAccessorTable;
+      internal_static_com_elbloquecadena_messages_MsgHello_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_elbloquecadena_messages_MPeer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_elbloquecadena_messages_MPeer_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4318,19 +5084,22 @@ public final class Messages {
   static {
     java.lang.String[] descriptorData = {
       "\n\016Messages.proto\022\033com.elbloquecadena.mes" +
-      "sages\"\214\002\n\007Message\0224\n\004ping\030\001 \001(\0132$.com.el" +
+      "sages\"\304\002\n\007Message\0224\n\004ping\030\001 \001(\0132$.com.el" +
       "bloquecadena.messages.MsgPingH\000\0224\n\004pong\030" +
       "\002 \001(\0132$.com.elbloquecadena.messages.MsgP" +
       "ongH\000\022F\n\rpeerdiscovery\030\003 \001(\0132-.com.elblo" +
       "quecadena.messages.MsgPeerDiscoveryH\000\022D\n" +
       "\014peerexchange\030\004 \001(\0132,.com.elbloquecadena" +
-      ".messages.MsgPeerExchangeH\000B\007\n\005value\"\030\n\007" +
-      "MsgPing\022\r\n\005msgid\030\001 \001(\t\"\030\n\007MsgPong\022\r\n\005msg" +
-      "id\030\001 \001(\t\"!\n\020MsgPeerDiscovery\022\r\n\005msgid\030\001 ",
-      "\001(\t\"R\n\017MsgPeerExchange\022\r\n\005msgid\030\001 \001(\t\0220\n" +
-      "\005peers\030\002 \003(\0132!.com.elbloquecadena.messag" +
-      "es.Peer\"2\n\004Peer\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030\002 " +
-      "\001(\005\022\016\n\006pubkey\030\003 \001(\014b\006proto3"
+      ".messages.MsgPeerExchangeH\000\0226\n\005hello\030\005 \001" +
+      "(\0132%.com.elbloquecadena.messages.MsgHell" +
+      "oH\000B\007\n\005value\"\030\n\007MsgPing\022\r\n\005msgid\030\001 \001(\t\"\030",
+      "\n\007MsgPong\022\r\n\005msgid\030\001 \001(\t\"!\n\020MsgPeerDisco" +
+      "very\022\r\n\005msgid\030\001 \001(\t\"S\n\017MsgPeerExchange\022\r" +
+      "\n\005msgid\030\001 \001(\t\0221\n\005peers\030\002 \003(\0132\".com.elblo" +
+      "quecadena.messages.MPeer\">\n\010MsgHello\0222\n\006" +
+      "myself\030\001 \001(\0132\".com.elbloquecadena.messag" +
+      "es.MPeer\"3\n\005MPeer\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030" +
+      "\002 \001(\005\022\016\n\006pubkey\030\003 \001(\014b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4349,7 +5118,7 @@ public final class Messages {
     internal_static_com_elbloquecadena_messages_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_elbloquecadena_messages_Message_descriptor,
-        new java.lang.String[] { "Ping", "Pong", "Peerdiscovery", "Peerexchange", "Value", });
+        new java.lang.String[] { "Ping", "Pong", "Peerdiscovery", "Peerexchange", "Hello", "Value", });
     internal_static_com_elbloquecadena_messages_MsgPing_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_elbloquecadena_messages_MsgPing_fieldAccessorTable = new
@@ -4374,11 +5143,17 @@ public final class Messages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_elbloquecadena_messages_MsgPeerExchange_descriptor,
         new java.lang.String[] { "Msgid", "Peers", });
-    internal_static_com_elbloquecadena_messages_Peer_descriptor =
+    internal_static_com_elbloquecadena_messages_MsgHello_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_com_elbloquecadena_messages_Peer_fieldAccessorTable = new
+    internal_static_com_elbloquecadena_messages_MsgHello_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_elbloquecadena_messages_Peer_descriptor,
+        internal_static_com_elbloquecadena_messages_MsgHello_descriptor,
+        new java.lang.String[] { "Myself", });
+    internal_static_com_elbloquecadena_messages_MPeer_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_elbloquecadena_messages_MPeer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_elbloquecadena_messages_MPeer_descriptor,
         new java.lang.String[] { "Host", "Port", "Pubkey", });
   }
 

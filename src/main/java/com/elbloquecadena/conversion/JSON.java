@@ -1,6 +1,9 @@
 package com.elbloquecadena.conversion;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Base64;
 
@@ -13,6 +16,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.stream.JsonWriter;
 
 public final class JSON {
 
@@ -35,6 +39,14 @@ public final class JSON {
         return gson.toJson(o);
     }
 
+    public static <K> void toJson(Object o, File outputfile) {
+        try (FileWriter writer = new FileWriter(outputfile)) {
+            writer.write(gson.toJson(o));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static <K> K fromJSON(String s, Class<K> c) {
         return gson.fromJson(s, c);
     }

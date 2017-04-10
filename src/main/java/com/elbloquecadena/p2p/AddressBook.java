@@ -9,6 +9,8 @@ public class AddressBook {
 
     private static final AddressBook instance;
 
+    public static final long PEER_NEVER_SEEN = -1;
+
     private Map<Peer, Long> peers = new HashMap<>();
 
     static {
@@ -31,19 +33,17 @@ public class AddressBook {
     }
 
     public void updateLastSeen(Peer p) {
-        peers.put(p, System.currentTimeMillis());
+        peers.merge(p, System.currentTimeMillis(), (first, second) -> {
+            return System.currentTimeMillis();
+        });
     }
 
     public void updateLastSeen(Socket sock) {
-        peers.put(new Peer(sock), System.currentTimeMillis());
+        updateLastSeen(new Peer(sock));
     }
 
     public long lastSeen(Peer p) {
-        Long val = peers.get(p);
-        if (val == null)
-            return -1;
-        else
-            return val;
+        return peers.getOrDefault(p, PEER_NEVER_SEEN);
     }
 
     public void forEach(BiConsumer<Peer, Long> action) {
