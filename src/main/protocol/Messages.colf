@@ -34,3 +34,10 @@ type MsgPeer struct {
     port int32
     pubkey binary
 }
+
+
+
+type Test struct {
+	head text
+	body binary
+}

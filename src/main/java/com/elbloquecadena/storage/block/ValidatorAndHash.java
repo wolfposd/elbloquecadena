@@ -3,7 +3,9 @@ package com.elbloquecadena.storage.block;
 import java.util.Objects;
 
 public class ValidatorAndHash {
+    /** Public Key */
     public final byte[] p;
+    /** Signature */
     public final byte[] s;
 
     public ValidatorAndHash(byte[] pubkey, byte[] signature) {

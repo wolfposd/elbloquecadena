@@ -2,7 +2,10 @@ package com.elbloquecadena.p2p;
 
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Peer representation
@@ -11,11 +14,16 @@ import java.util.Objects;
  */
 public class Peer {
 
+    @SerializedName("ip")
+
     private final String hostAddress;
+    @SerializedName("port")
     private final int portNumber;
 
-    private Socket socket;
+    @SerializedName("pubkey")
     private byte[] publicKey;
+
+    private Socket socket;
 
     public Peer(String hostAddress, int portNumber) {
         this.hostAddress = hostAddress;
@@ -67,10 +75,16 @@ public class Peer {
             Peer other = (Peer) obj;
             return Objects.equals(hostAddress, other.hostAddress) //
                     && portNumber == other.portNumber //
-                    // && Objects.equals(socket, other.socket) // not sure if sockets need to equal?
-                    && Objects.deepEquals(publicKey, other.publicKey);
+            // && Objects.equals(socket, other.socket) // not sure if sockets need to equal?
+            // && Objects.deepEquals(publicKey, other.publicKey)
+            ;
         } else
             return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Peer[" + hostAddress + ":" + portNumber + "," + Base64.getEncoder().encodeToString(publicKey) + "]";
     }
 
 }

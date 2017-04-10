@@ -1,34 +1,33 @@
 package com.elbloquecadena.p2p;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import com.elbloquecadena.conversion.JSON;
+import com.elbloquecadena.storage.Settings;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+
 public class P2PTestSample {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, JsonSyntaxException, JsonIOException, FileNotFoundException {
 
-        P2PServer server = new P2PServer();
+        String settingsPath = "settings.json";
+        if (args.length > 0) {
+            settingsPath = args[0];
+        }
 
-        System.out.println("starting server");
-        new Thread(server::start).start();
+        Settings settings = JSON.fromJson(new FileReader(settingsPath), Settings.class);
 
-        System.out.println("Waiting for server");
-        Thread.sleep(1000);
-        
-        
-        
-        new Thread(() -> {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-            }
-            System.out.println("stopping server");
-            server.stop();
-        }).start();
-        
+        System.out.println(settings.listenport);
+        System.out.println(settings.peer);
+        System.out.println(Base64.getEncoder().encodeToString(settings.privatekey));
+        System.out.println(Base64.getEncoder().encodeToString(settings.publickey));
 
-        new Thread(() -> {
-            System.out.println("starting client");
-            P2PClient client = new P2PClient("localhost", P2PServer.DEFAULT_SERVER_PORT);
-            Peer peer = client.open();
-        }).start();
+        P2PManager manager = new P2PManager(settings.listenport, settings.peer);
 
         while (true) {
             Thread.sleep(2000);

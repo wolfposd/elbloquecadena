@@ -1,5 +1,6 @@
 package com.elbloquecadena.conversion;
 
+import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.Base64;
 
@@ -18,12 +19,16 @@ public final class JSON {
     private static final Gson gson;
 
     static {
-        gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().registerTypeAdapter(byte[].class, new ByteArraySerializer())
-                // .registerTypeAdapter(byte[].class,
-                // (JsonSerializer<byte[]>) (bytes, typeOfT, context) -> new JsonPrimitive(Base64.getEncoder().encodeToString(bytes)))
-                // .registerTypeAdapter(byte[].class,
-                // (JsonDeserializer<byte[]>) (json, typeOfT, context) -> Base64.getDecoder().decode(json.getAsString()))
+        gson = new GsonBuilder() //
+                .setPrettyPrinting() //
+                .disableHtmlEscaping() //
+                .registerTypeAdapter(byte[].class, new ByteArraySerializer()) //
                 .create();
+
+        // .registerTypeAdapter(byte[].class,
+        // (JsonSerializer<byte[]>) (bytes, typeOfT, context) -> new JsonPrimitive(Base64.getEncoder().encodeToString(bytes)))
+        // .registerTypeAdapter(byte[].class,
+        // (JsonDeserializer<byte[]>) (json, typeOfT, context) -> Base64.getDecoder().decode(json.getAsString()))
     }
 
     public static String toJSON(Object o) {
@@ -32,6 +37,10 @@ public final class JSON {
 
     public static <K> K fromJSON(String s, Class<K> c) {
         return gson.fromJson(s, c);
+    }
+
+    public static <K> K fromJson(FileReader fileReader, Class<K> class1) {
+        return gson.fromJson(fileReader, class1);
     }
 
     public static class ByteArraySerializer implements JsonDeserializer<byte[]>, JsonSerializer<byte[]> {

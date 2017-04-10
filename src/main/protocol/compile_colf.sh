@@ -1,4 +1,5 @@
+
 #!/bin/bash
 
 
-colf -b ../java/ -p com/elbloquecadena java
+colf -b ../java/ -p com.elbloquecadena java

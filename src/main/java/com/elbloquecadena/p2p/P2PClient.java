@@ -5,13 +5,11 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.elbloquecadena.crypto.Crypto;
 import com.elbloquecadena.messages.Messages.Message;
 import com.elbloquecadena.messages.Messages.MsgPing;
-import com.github.jtmsp.merkletree.crypto.ByteUtil;
 
 /**
  * Peer2Peer client socket class
@@ -21,41 +19,68 @@ import com.github.jtmsp.merkletree.crypto.ByteUtil;
  */
 public class P2PClient {
 
+    
+    public static final int PING_SCHEDULE_SECONDS = 5;
+    
     private Socket socket;
-    private String hostAddress;
-    private int port;
+    private final String hostAddress;
+    private final int port;
 
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(3);
+    private final MessagesHandler handler;
 
-    public P2PClient(String hostAddress, int port) {
+    public P2PClient(String hostAddress, int port, MessagesHandler handler) {
         this.hostAddress = hostAddress;
         this.port = port;
+        this.handler = handler;
     }
 
     public Peer open() {
-        try {
-            socket = new Socket(hostAddress, port);
-            socket.setSoLinger(true, 0);
-            scheduleTasks();
+        boolean result = tryOpen(20);
+        if (result)
             return new Peer(socket);
-        } catch (IOException e) {
+        else
+            return null;
+    }
+
+    private boolean tryOpen(int times) {
+        int i = 0;
+        boolean result = false;
+
+        while (i < times) {
+            System.out.println("connection try " + i + " -> " + hostAddress + ":" + port);
+            try {
+                socket = new Socket(hostAddress, port);
+                socket.setSoLinger(true, 0);
+                scheduleTasks();
+
+                result = true;
+                break;
+            } catch (IOException e) {
+                i++;
+                System.err.println(e.getMessage());
+
+                try {
+                    Thread.sleep(100 + 600 * i);
+                } catch (InterruptedException e1) {
+                }
+            }
         }
-        return null;
+
+        return result;
     }
 
     private void scheduleTasks() {
         executorService.scheduleAtFixedRate(() -> {
-
-            System.out.println("socketclosed?" + socket.isClosed() + "  ,output open:" + socket.isOutputShutdown());
-            System.out.println("socketConnected?" + socket.isConnected());
-
+            // System.out.println("socketclosed?" + socket.isClosed() + " ,output open:" + socket.isOutputShutdown());
+            // System.out.println("socketConnected?" + socket.isConnected());
             if (!socket.isClosed()) {
                 ping();
             } else {
                 System.err.println("socket connection is done, canceling pings");
                 throw new RuntimeException("Ping Scheduler canceled");
             }
-        }, 2, 2, TimeUnit.SECONDS);
+        }, PING_SCHEDULE_SECONDS, PING_SCHEDULE_SECONDS, TimeUnit.SECONDS);
 
         new Thread(() -> read()).start();
 
@@ -63,18 +88,11 @@ public class P2PClient {
 
     private void read() {
         try {
-
             InputStream inStream = socket.getInputStream();
             Message m = null;
             while ((m = Message.parseDelimitedFrom(inStream)) != null) {
-                switch (m.getValueCase()) {
-                case PONG:
-                    System.out.println("  >>  weve got a pong back:" + m.getPong().getMsgid());
-                    break;
-                case VALUE_NOT_SET:
-                default:
-                }
-
+                if (handler != null)
+                    handler.onMessageReceived(m, this.socket);
             }
 
         } catch (IOException e) {
