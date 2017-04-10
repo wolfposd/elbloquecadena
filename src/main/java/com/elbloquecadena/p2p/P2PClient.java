@@ -118,9 +118,9 @@ public class P2PClient {
 
     public void sendHelloMessage(Socket socket) {
 
-        ByteString b = ByteString.copyFrom(Crypto.compressedKey(keypair.getPublic()));
+        ByteString pubkey = ByteString.copyFrom(Crypto.compressedKey(keypair.getPublic()));
 
-        MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(101010).setPubkey(b).build();
+        MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(this.port).setPubkey(pubkey).build();
 
         Builder hello = MsgHello.newBuilder().setMyself(myself);
 
@@ -137,7 +137,7 @@ public class P2PClient {
         try {
             MsgPing ping = MsgPing.newBuilder().setMsgid(Crypto.randomString(15)).build();
             Message m = Message.newBuilder().setPing(ping).build();
-            System.out.println("Ping: " + ping.getMsgid());
+            System.out.println("Sending Ping: " + ping.getMsgid());
             m.writeDelimitedTo(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
