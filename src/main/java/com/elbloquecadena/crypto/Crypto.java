@@ -113,13 +113,17 @@ public class Crypto {
     }
 
     public static PrivateKey getPrivateKeyFromBytes(byte[] privKey) throws CryptoException {
-        try {
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privKey);
-            KeyFactory factory = KeyFactory.getInstance(ECDSA, PROVIDER);
-            PrivateKey privateKey = factory.generatePrivate(spec);
-            return privateKey;
-        } catch (Exception e) {
-            throw new CryptoException(e);
+        if (privKey.length > 0 && privKey.length < 33) {
+            return parseCompressedPrivateKey(privKey);
+        } else {
+            try {
+                PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privKey);
+                KeyFactory factory = KeyFactory.getInstance(ECDSA, PROVIDER);
+                PrivateKey privateKey = factory.generatePrivate(spec);
+                return privateKey;
+            } catch (Exception e) {
+                throw new CryptoException(e);
+            }
         }
     }
 

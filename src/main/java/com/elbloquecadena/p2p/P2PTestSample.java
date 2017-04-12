@@ -3,19 +3,14 @@ package com.elbloquecadena.p2p;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 import com.elbloquecadena.conversion.JSON;
 import com.elbloquecadena.crypto.Crypto;
 import com.elbloquecadena.crypto.CryptoException;
 import com.elbloquecadena.storage.Settings;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 public class P2PTestSample {
 
