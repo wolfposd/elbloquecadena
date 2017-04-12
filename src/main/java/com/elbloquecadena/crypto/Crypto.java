@@ -16,18 +16,21 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.crypto.ec.CustomNamedCurves;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jce.ECPointUtil;
+import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.bouncycastle.jce.spec.ECPrivateKeySpec;
 
 import com.elbloquecadena.storage.block.ImmutableBlock;
+import com.github.jtmsp.merkletree.crypto.ByteUtil;
 
 public class Crypto {
 
@@ -42,7 +45,7 @@ public class Crypto {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    public static KeyPair generateKeys() {
+    public static KeyPair generateKeys() throws CryptoException {
         try {
             X9ECParameters ecP = CustomNamedCurves.getByName(CURVE_NAME);
             ECParameterSpec ecSpec = new ECParameterSpec(ecP.getCurve(), ecP.getG(), ecP.getN(), ecP.getH(), ecP.getSeed());
@@ -51,13 +54,39 @@ public class Crypto {
             keygen.initialize(ecSpec, new SecureRandom());
             return keygen.generateKeyPair();
         } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
+            throw new CryptoException(e);
         }
-        return null;
     }
 
-    public static byte[] compressedKey(PublicKey key) {
-        return ((ECPublicKey) key).getQ().getEncoded(true);
+    public static ECPrivateKey parseCompressedPrivateKey(byte[] compressedPrivateKey) throws CryptoException {
+
+        X9ECParameters ecP = CustomNamedCurves.getByName(CURVE_NAME);
+        ECParameterSpec ecSpec = new ECParameterSpec(ecP.getCurve(), ecP.getG(), ecP.getN(), ecP.getH(), ecP.getSeed());
+
+        ECPrivateKeySpec privkeyspec = new ECPrivateKeySpec(new BigInteger(compressedPrivateKey), ecSpec);
+
+        PrivateKey generatePrivate = null;
+        try {
+            generatePrivate = KeyFactory.getInstance(ECDSA, PROVIDER).generatePrivate(privkeyspec);
+        } catch (Exception e) {
+            throw new CryptoException(e);
+        }
+
+        return (ECPrivateKey) generatePrivate;
+    }
+
+    public static byte[] compressedKey(PublicKey key) throws CryptoException {
+        if (key instanceof ECPublicKey) {
+            return ((ECPublicKey) key).getQ().getEncoded(true);
+        }
+        throw new CryptoException(new IllegalArgumentException("Can only compress ECPublicKey"));
+    }
+
+    public static byte[] compressedKey(PrivateKey privkey) throws CryptoException {
+        if (privkey instanceof ECPrivateKey) {
+            return ((ECPrivateKey) privkey).getD().toByteArray();
+        }
+        throw new CryptoException(new IllegalArgumentException("Can only compress ECPrivateKey"));
     }
 
     public static byte[] signMessage(PrivateKey key, byte[] message) {
@@ -86,7 +115,7 @@ public class Crypto {
     public static PrivateKey getPrivateKeyFromBytes(byte[] privKey) throws CryptoException {
         try {
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privKey);
-            KeyFactory factory = KeyFactory.getInstance("ECDSA");
+            KeyFactory factory = KeyFactory.getInstance(ECDSA, PROVIDER);
             PrivateKey privateKey = factory.generatePrivate(spec);
             return privateKey;
         } catch (Exception e) {

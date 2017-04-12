@@ -16,7 +16,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.stream.JsonWriter;
 
 public final class JSON {
 
@@ -39,11 +38,11 @@ public final class JSON {
         return gson.toJson(o);
     }
 
-    public static <K> void toJson(Object o, File outputfile) {
+    public static <K> void toJson(Object o, File outputfile) throws IOException {
         try (FileWriter writer = new FileWriter(outputfile)) {
             writer.write(gson.toJson(o));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(e);
         }
     }
     

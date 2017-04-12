@@ -1,5 +1,6 @@
 package com.elbloquecadena;
 
+import java.io.IOException;
 import java.security.KeyPair;
 import java.util.ArrayList;
 
@@ -7,22 +8,31 @@ import org.bouncycastle.jce.interfaces.ECPublicKey;
 
 import com.elbloquecadena.conversion.JSON;
 import com.elbloquecadena.crypto.Crypto;
+import com.elbloquecadena.crypto.CryptoException;
 import com.elbloquecadena.p2p.Peer;
 import com.elbloquecadena.storage.Settings;
-import com.elbloquecadena.storage.SettingsPeer;
 import com.elbloquecadena.storage.block.ImmutableBlock;
 import com.elbloquecadena.storage.block.MutableBlock;
 import com.github.jtmsp.merkletree.byteable.ByteableString;
+import com.github.jtmsp.merkletree.crypto.ByteUtil;
 
 public class SampleStartup {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, CryptoException {
 
         KeyPair kp = Crypto.generateKeys();
-        byte[] pubke22y = ((ECPublicKey) kp.getPublic()).getQ().getEncoded(true);
-        Settings settings = new Settings(8080,pubke22y, kp.getPrivate().getEncoded(), new ArrayList<Peer>());
+        byte[] pubkey22 = ((ECPublicKey) kp.getPublic()).getQ().getEncoded(true);
+        byte[] privkey22 = Crypto.compressedKey(kp.getPrivate());
+
+        Settings settings = new Settings(8080, pubkey22, privkey22, new ArrayList<Peer>());
         System.out.println(settings.privatekey.length);
         System.out.println(JSON.toJSON(settings));
+
+        System.out.println();
+
+        System.out.println("pubkey: " + ByteUtil.toString00(pubkey22));
+        //Crypto.compressedPrivKey(kp.getPrivate());
+
         if (1 == (2 - 1)) {
             System.exit(0);
         }

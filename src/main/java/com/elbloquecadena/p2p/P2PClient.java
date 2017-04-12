@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.elbloquecadena.crypto.Crypto;
+import com.elbloquecadena.crypto.CryptoException;
 import com.elbloquecadena.messages.Messages.MPeer;
 import com.elbloquecadena.messages.Messages.Message;
 import com.elbloquecadena.messages.Messages.MsgHello;
@@ -118,19 +119,22 @@ public class P2PClient {
 
     public void sendHelloMessage(Socket socket) {
 
-        ByteString pubkey = ByteString.copyFrom(Crypto.compressedKey(keypair.getPublic()));
-
-        MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(this.port).setPubkey(pubkey).build();
-
-        Builder hello = MsgHello.newBuilder().setMyself(myself);
-
-        Message m = Message.newBuilder().setHello(hello).build();
-
         try {
+            ByteString pubkey = ByteString.copyFrom(Crypto.compressedKey(keypair.getPublic()));
+            MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(this.port).setPubkey(pubkey).build();
+
+            Builder hello = MsgHello.newBuilder().setMyself(myself);
+
+            Message m = Message.newBuilder().setHello(hello).build();
+
             m.writeDelimitedTo(socket.getOutputStream());
+        } catch (CryptoException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void sendPingMessage() {
