@@ -33,6 +33,9 @@ public class P2PManager implements MessagesHandler, ServerEvents {
 
     public P2PManager(Settings settings) {
         this.settings = settings;
+    }
+
+    public void start() {
         server = new P2PServer(settings.listenport, this, this);
 
         cachedPool.submit(server::start);
@@ -61,7 +64,7 @@ public class P2PManager implements MessagesHandler, ServerEvents {
         if (origPeer.getSocket() == null) {
             System.out.println("Starting P2P client connecting to: " + origPeer.getHostAddress() + ":" + origPeer.getPortNumber());
             P2PClient cli = new P2PClient(origPeer.getHostAddress(), origPeer.getPortNumber(), settings, this);
-            cachedPool.submit(cli::open);
+            cachedPool.submit(cli::start);
         } else {
             System.out.println("connectiong to peer already open ,peer:" + peer);
         }

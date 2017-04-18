@@ -53,7 +53,7 @@ public class P2PClient {
         }
     }
 
-    public Peer open() {
+    public Peer start() {
         boolean result = tryOpen(20);
         if (result) {
             sendHelloMessage(socket);

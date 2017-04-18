@@ -34,6 +34,7 @@ public class P2PTestSample {
         KeyPair k = new KeyPair(pubkey, privkey);
 
         P2PManager manager = new P2PManager(settings);
+        manager.start();
 
         while (true) {
             Thread.sleep(2000);
