@@ -4,7 +4,7 @@ import java.net.Socket;
 
 import com.elbloquecadena.messages.Messages.Message;
 
-public interface MessagesHandler {
+public interface MessageReceiver {
 
     public void onMessageReceived(Message message, Socket endpoint);
 

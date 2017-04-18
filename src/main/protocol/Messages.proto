@@ -34,7 +34,8 @@ message MsgPeerExchange {
 }
 
 message MsgHello {
-	MPeer myself = 1;
+	string msgid = 1;
+	MPeer myself = 2;
 }
 
 

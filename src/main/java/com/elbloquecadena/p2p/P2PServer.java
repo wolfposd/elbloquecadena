@@ -2,7 +2,6 @@ package com.elbloquecadena.p2p;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -10,9 +9,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.elbloquecadena.messages.Messages.Message;
-import com.elbloquecadena.messages.Messages.MsgPing;
-import com.elbloquecadena.messages.Messages.MsgPong;
-import com.elbloquecadena.p2p.observers.MessagesHandler;
+import com.elbloquecadena.p2p.observers.MessageReceiver;
 import com.elbloquecadena.p2p.observers.ServerEvents;
 
 /**
@@ -35,7 +32,7 @@ public class P2PServer {
 
     private AtomicBoolean keepAcceptingConnections = new AtomicBoolean(true);
 
-    private MessagesHandler mHandler;
+    private MessageReceiver mReceiver;
 
     private ServerEvents serverEvents;
 
@@ -43,9 +40,9 @@ public class P2PServer {
         this.serverPortNumber = DEFAULT_SERVER_PORT;
     }
 
-    public P2PServer(int portNumber, MessagesHandler mHandler, ServerEvents serverEvents) {
+    public P2PServer(int portNumber, MessageReceiver receiver, ServerEvents serverEvents) {
         this.serverPortNumber = portNumber;
-        this.mHandler = mHandler;
+        this.mReceiver = receiver;
         this.serverEvents = serverEvents;
     }
 
@@ -106,25 +103,15 @@ public class P2PServer {
                 InputStream inStream = peer.getSocket().getInputStream();
                 while (continueLoop && !peer.getSocket().isClosed()) {
                     Message m = Message.parseDelimitedFrom(inStream);
-                    //System.out.println("received m" + m + "   passing to mHandler:" + mHandler);
-                    if (mHandler != null) {
-                        mHandler.onMessageReceived(m, peer.getSocket());
+                    // System.out.println("received m" + m + " passing to mHandler:" + mHandler);
+                    if (mReceiver != null) {
+                        mReceiver.onMessageReceived(m, peer.getSocket());
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             System.out.println("I was done reading anyway :-(");
-        }
-    }
-
-    public void handlePing(MsgPing ping, OutputStream outstream) {
-        System.out.println("received Ping, answering Pong");
-        MsgPong.Builder pong = MsgPong.newBuilder().setMsgid(ping.getMsgid());
-        try {
-            Message.newBuilder().setPong(pong).build().writeDelimitedTo(outstream);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

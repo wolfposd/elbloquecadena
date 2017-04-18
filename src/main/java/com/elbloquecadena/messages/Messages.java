@@ -3852,15 +3852,25 @@ public final class Messages {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>string msgid = 1;</code>
+     */
+    java.lang.String getMsgid();
+    /**
+     * <code>string msgid = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgidBytes();
+
+    /**
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     boolean hasMyself();
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     com.elbloquecadena.messages.Messages.MPeer getMyself();
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder();
   }
@@ -3876,6 +3886,7 @@ public final class Messages {
       super(builder);
     }
     private MsgHello() {
+      msgid_ = "";
     }
 
     @java.lang.Override
@@ -3904,6 +3915,12 @@ public final class Messages {
               break;
             }
             case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              msgid_ = s;
+              break;
+            }
+            case 18: {
               com.elbloquecadena.messages.Messages.MPeer.Builder subBuilder = null;
               if (myself_ != null) {
                 subBuilder = myself_.toBuilder();
@@ -3939,22 +3956,56 @@ public final class Messages {
               com.elbloquecadena.messages.Messages.MsgHello.class, com.elbloquecadena.messages.Messages.MsgHello.Builder.class);
     }
 
-    public static final int MYSELF_FIELD_NUMBER = 1;
+    public static final int MSGID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object msgid_;
+    /**
+     * <code>string msgid = 1;</code>
+     */
+    public java.lang.String getMsgid() {
+      java.lang.Object ref = msgid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        msgid_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string msgid = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgidBytes() {
+      java.lang.Object ref = msgid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MYSELF_FIELD_NUMBER = 2;
     private com.elbloquecadena.messages.Messages.MPeer myself_;
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     public boolean hasMyself() {
       return myself_ != null;
     }
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     public com.elbloquecadena.messages.Messages.MPeer getMyself() {
       return myself_ == null ? com.elbloquecadena.messages.Messages.MPeer.getDefaultInstance() : myself_;
     }
     /**
-     * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+     * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
      */
     public com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder() {
       return getMyself();
@@ -3972,8 +4023,11 @@ public final class Messages {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (!getMsgidBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, msgid_);
+      }
       if (myself_ != null) {
-        output.writeMessage(1, getMyself());
+        output.writeMessage(2, getMyself());
       }
     }
 
@@ -3982,9 +4036,12 @@ public final class Messages {
       if (size != -1) return size;
 
       size = 0;
+      if (!getMsgidBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, msgid_);
+      }
       if (myself_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getMyself());
+          .computeMessageSize(2, getMyself());
       }
       memoizedSize = size;
       return size;
@@ -4002,6 +4059,8 @@ public final class Messages {
       com.elbloquecadena.messages.Messages.MsgHello other = (com.elbloquecadena.messages.Messages.MsgHello) obj;
 
       boolean result = true;
+      result = result && getMsgid()
+          .equals(other.getMsgid());
       result = result && (hasMyself() == other.hasMyself());
       if (hasMyself()) {
         result = result && getMyself()
@@ -4017,6 +4076,8 @@ public final class Messages {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + MSGID_FIELD_NUMBER;
+      hash = (53 * hash) + getMsgid().hashCode();
       if (hasMyself()) {
         hash = (37 * hash) + MYSELF_FIELD_NUMBER;
         hash = (53 * hash) + getMyself().hashCode();
@@ -4139,6 +4200,8 @@ public final class Messages {
       }
       public Builder clear() {
         super.clear();
+        msgid_ = "";
+
         if (myselfBuilder_ == null) {
           myself_ = null;
         } else {
@@ -4167,6 +4230,7 @@ public final class Messages {
 
       public com.elbloquecadena.messages.Messages.MsgHello buildPartial() {
         com.elbloquecadena.messages.Messages.MsgHello result = new com.elbloquecadena.messages.Messages.MsgHello(this);
+        result.msgid_ = msgid_;
         if (myselfBuilder_ == null) {
           result.myself_ = myself_;
         } else {
@@ -4213,6 +4277,10 @@ public final class Messages {
 
       public Builder mergeFrom(com.elbloquecadena.messages.Messages.MsgHello other) {
         if (other == com.elbloquecadena.messages.Messages.MsgHello.getDefaultInstance()) return this;
+        if (!other.getMsgid().isEmpty()) {
+          msgid_ = other.msgid_;
+          onChanged();
+        }
         if (other.hasMyself()) {
           mergeMyself(other.getMyself());
         }
@@ -4242,17 +4310,86 @@ public final class Messages {
         return this;
       }
 
+      private java.lang.Object msgid_ = "";
+      /**
+       * <code>string msgid = 1;</code>
+       */
+      public java.lang.String getMsgid() {
+        java.lang.Object ref = msgid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          msgid_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string msgid = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgidBytes() {
+        java.lang.Object ref = msgid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string msgid = 1;</code>
+       */
+      public Builder setMsgid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        msgid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msgid = 1;</code>
+       */
+      public Builder clearMsgid() {
+        
+        msgid_ = getDefaultInstance().getMsgid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msgid = 1;</code>
+       */
+      public Builder setMsgidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        msgid_ = value;
+        onChanged();
+        return this;
+      }
+
       private com.elbloquecadena.messages.Messages.MPeer myself_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> myselfBuilder_;
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public boolean hasMyself() {
         return myselfBuilder_ != null || myself_ != null;
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public com.elbloquecadena.messages.Messages.MPeer getMyself() {
         if (myselfBuilder_ == null) {
@@ -4262,7 +4399,7 @@ public final class Messages {
         }
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public Builder setMyself(com.elbloquecadena.messages.Messages.MPeer value) {
         if (myselfBuilder_ == null) {
@@ -4278,7 +4415,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public Builder setMyself(
           com.elbloquecadena.messages.Messages.MPeer.Builder builderForValue) {
@@ -4292,7 +4429,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public Builder mergeMyself(com.elbloquecadena.messages.Messages.MPeer value) {
         if (myselfBuilder_ == null) {
@@ -4310,7 +4447,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public Builder clearMyself() {
         if (myselfBuilder_ == null) {
@@ -4324,7 +4461,7 @@ public final class Messages {
         return this;
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public com.elbloquecadena.messages.Messages.MPeer.Builder getMyselfBuilder() {
         
@@ -4332,7 +4469,7 @@ public final class Messages {
         return getMyselfFieldBuilder().getBuilder();
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       public com.elbloquecadena.messages.Messages.MPeerOrBuilder getMyselfOrBuilder() {
         if (myselfBuilder_ != null) {
@@ -4343,7 +4480,7 @@ public final class Messages {
         }
       }
       /**
-       * <code>.com.elbloquecadena.messages.MPeer myself = 1;</code>
+       * <code>.com.elbloquecadena.messages.MPeer myself = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.elbloquecadena.messages.Messages.MPeer, com.elbloquecadena.messages.Messages.MPeer.Builder, com.elbloquecadena.messages.Messages.MPeerOrBuilder> 
@@ -5096,10 +5233,11 @@ public final class Messages {
       "\n\007MsgPong\022\r\n\005msgid\030\001 \001(\t\"!\n\020MsgPeerDisco" +
       "very\022\r\n\005msgid\030\001 \001(\t\"S\n\017MsgPeerExchange\022\r" +
       "\n\005msgid\030\001 \001(\t\0221\n\005peers\030\002 \003(\0132\".com.elblo" +
-      "quecadena.messages.MPeer\">\n\010MsgHello\0222\n\006" +
-      "myself\030\001 \001(\0132\".com.elbloquecadena.messag" +
-      "es.MPeer\"3\n\005MPeer\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030" +
-      "\002 \001(\005\022\016\n\006pubkey\030\003 \001(\014b\006proto3"
+      "quecadena.messages.MPeer\"M\n\010MsgHello\022\r\n\005" +
+      "msgid\030\001 \001(\t\0222\n\006myself\030\002 \001(\0132\".com.elbloq" +
+      "uecadena.messages.MPeer\"3\n\005MPeer\022\014\n\004host" +
+      "\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\016\n\006pubkey\030\003 \001(\014b\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5148,7 +5286,7 @@ public final class Messages {
     internal_static_com_elbloquecadena_messages_MsgHello_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_elbloquecadena_messages_MsgHello_descriptor,
-        new java.lang.String[] { "Myself", });
+        new java.lang.String[] { "Msgid", "Myself", });
     internal_static_com_elbloquecadena_messages_MPeer_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_com_elbloquecadena_messages_MPeer_fieldAccessorTable = new
