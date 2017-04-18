@@ -2,10 +2,10 @@ package com.elbloquecadena.p2p;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.security.KeyPair;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.elbloquecadena.crypto.Crypto;
 import com.elbloquecadena.messages.Messages;
@@ -18,32 +18,62 @@ import com.elbloquecadena.messages.Messages.MsgPing;
 import com.elbloquecadena.messages.Messages.MsgPong;
 import com.elbloquecadena.p2p.observers.MessagesHandler;
 import com.elbloquecadena.p2p.observers.ServerEvents;
+import com.elbloquecadena.storage.Settings;
 import com.google.protobuf.ByteString;
 
 public class P2PManager implements MessagesHandler, ServerEvents {
 
     private ExecutorService cachedPool = Executors.newCachedThreadPool();
 
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+
     private P2PServer server;
 
-    public P2PManager(int serverPort, List<Peer> initialPeers, KeyPair keypair) {
-        server = new P2PServer(serverPort, this, this);
+    private Settings settings;
+
+    public P2PManager(Settings settings) {
+        this.settings = settings;
+        server = new P2PServer(settings.listenport, this, this);
 
         cachedPool.submit(server::start);
 
-        initialPeers.forEach(peer -> {
-            AddressBook.getInstance().addPeer(peer);
-            System.out.println("Starting P2P client connecting to: " + peer.getHostAddress() + ":" + peer.getPortNumber());
-            P2PClient cli = new P2PClient(peer.getHostAddress(), peer.getPortNumber(), keypair, this);
-            cachedPool.submit(cli::open);
+        settings.peer.forEach(peer -> {
+            connectToNewRemoteClient(settings, peer);
         });
+
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Addressbook contains: " + AddressBook.getInstance());
+            AddressBook.getInstance().forEach((p, l) -> {
+                System.out.println("  " + p + " " + l);
+            });
+        }, 5, 5, TimeUnit.SECONDS);
+
+    }
+
+    private void connectToNewRemoteClient(Settings settings, Peer peer) {
+
+        Peer origPeer = AddressBook.getInstance().getPeer(peer);
+        if (origPeer == null) {
+            origPeer = peer;
+            AddressBook.getInstance().addPeer(peer);
+        }
+
+        if (origPeer.getSocket() == null) {
+            System.out.println("Starting P2P client connecting to: " + origPeer.getHostAddress() + ":" + origPeer.getPortNumber());
+            P2PClient cli = new P2PClient(origPeer.getHostAddress(), origPeer.getPortNumber(), settings, this);
+            cachedPool.submit(cli::open);
+        } else {
+            System.out.println("connectiong to peer already open ,peer:" + peer);
+        }
     }
 
     private void sendPeerDiscoveryMessageTo(Socket endpoint) {
         try {
             MsgPeerDiscovery peerdisc = MsgPeerDiscovery.newBuilder().setMsgid(Crypto.randomString(15)).build();
+
+            System.err.println("sending peerdisc " + peerdisc.getMsgid() + " to " + endpoint.getInetAddress() + ":" + endpoint.getPort());
+
             Message m = Message.newBuilder().setPeerdiscovery(peerdisc).build();
-            System.out.println("sending peerdisc " + peerdisc.getMsgid() + " to " + endpoint.getInetAddress() + ":" + endpoint.getPort());
             m.writeDelimitedTo(endpoint.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,7 +81,6 @@ public class P2PManager implements MessagesHandler, ServerEvents {
     }
 
     protected void onPing(MsgPing ping, Socket endpoint) {
-        System.out.println("received Ping, answering Pong");
         MsgPong.Builder pong = MsgPong.newBuilder().setMsgid(ping.getMsgid());
         try {
             Message.newBuilder().setPong(pong).build().writeDelimitedTo(endpoint.getOutputStream());
@@ -96,14 +125,18 @@ public class P2PManager implements MessagesHandler, ServerEvents {
     }
 
     protected void onHello(MsgHello hello, Socket endpoint) {
-
         Peer peer = new Peer(endpoint.getInetAddress().getHostAddress(), hello.getMyself().getPort());
         peer.setPublicKey(hello.getMyself().getPubkey().toByteArray());
         peer.setSocket(endpoint);
 
-        System.out.println("Should i add Peer to AB? \n    " + peer);
+        if (AddressBook.getInstance().lastSeen(peer) == AddressBook.PEER_NEVER_SEEN) {
+            System.out.println("AB: adding new peer " + peer);
+            System.err.println("connecting to new peer " + peer);
+            connectToNewRemoteClient(settings, peer);
+        } else {
+            AddressBook.getInstance().updateLastSeen(peer);
+        }
 
-        // AddressBook.getInstance().addPeer(peer);
     }
 
     protected void onValueNotSet(Message message, Socket endpoint) {
@@ -136,14 +169,6 @@ public class P2PManager implements MessagesHandler, ServerEvents {
 
     @Override
     public void onClientConnectsToServer(Socket clientSocket) {
-        // Peer p = new Peer(clientSocket);
-        //
-        // if (AddressBook.getInstance().lastSeen(p) != AddressBook.PEER_NEVER_SEEN) {
-        // AddressBook.getInstance().addPeer(p);
-        // } else {
-        // AddressBook.getInstance().updateLastSeen(p);
-        // }
-
         sendPeerDiscoveryMessageTo(clientSocket);
     }
 

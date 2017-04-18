@@ -57,6 +57,10 @@ public class Crypto {
             throw new CryptoException(e);
         }
     }
+    
+    public static KeyPair makeKeyPair(byte[] compressedPrivate, byte[] compressedPublic) throws CryptoException {
+        return new KeyPair(getPublicKeyFromBytes(compressedPublic), getPrivateKeyFromBytes(compressedPrivate));
+    }
 
     public static ECPrivateKey parseCompressedPrivateKey(byte[] compressedPrivateKey) throws CryptoException {
 

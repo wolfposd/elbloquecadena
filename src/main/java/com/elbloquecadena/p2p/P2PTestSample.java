@@ -33,7 +33,7 @@ public class P2PTestSample {
 
         KeyPair k = new KeyPair(pubkey, privkey);
 
-        P2PManager manager = new P2PManager(settings.listenport, settings.peer, k);
+        P2PManager manager = new P2PManager(settings);
 
         while (true) {
             Thread.sleep(2000);

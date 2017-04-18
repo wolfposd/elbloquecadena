@@ -19,7 +19,6 @@ import com.github.jtmsp.merkletree.crypto.ByteUtil;
 public class SampleStartup {
 
     public static void main(String[] args) throws IOException, CryptoException {
-
         KeyPair kp = Crypto.generateKeys();
         byte[] pubkey22 = ((ECPublicKey) kp.getPublic()).getQ().getEncoded(true);
         byte[] privkey22 = Crypto.compressedKey(kp.getPrivate());

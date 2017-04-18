@@ -25,14 +25,24 @@ public class AddressBook {
     }
 
     public void addPeer(Peer p) {
-        peers.put(p, System.currentTimeMillis());
+        updateLastSeen(p);
+        // peers.put(p, System.currentTimeMillis());
+    }
+
+    public Peer getPeer(Peer p) {
+        for (Peer peer : peers.keySet()) {
+            if (peer.equals(p))
+                return peer;
+        }
+        return null;
     }
 
     public void removePeer(Peer p) {
-        peers.remove(p);
+        // peers.remove(p);
     }
 
     public void updateLastSeen(Peer p) {
+        // peers.replace(p, System.currentTimeMillis());
         peers.merge(p, System.currentTimeMillis(), (first, second) -> {
             return System.currentTimeMillis();
         });
@@ -48,6 +58,15 @@ public class AddressBook {
 
     public void forEach(BiConsumer<Peer, Long> action) {
         peers.forEach(action);
+    }
+
+    public int size() {
+        return peers.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Addressbook[" + peers.toString() + "]";
     }
 
 }

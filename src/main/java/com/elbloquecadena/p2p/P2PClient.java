@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.security.KeyPair;
+import java.util.Base64;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -13,9 +14,11 @@ import com.elbloquecadena.crypto.CryptoException;
 import com.elbloquecadena.messages.Messages.MPeer;
 import com.elbloquecadena.messages.Messages.Message;
 import com.elbloquecadena.messages.Messages.MsgHello;
+import com.elbloquecadena.messages.Messages.MsgPeerDiscovery;
 import com.elbloquecadena.messages.Messages.MsgHello.Builder;
 import com.elbloquecadena.messages.Messages.MsgPing;
 import com.elbloquecadena.p2p.observers.MessagesHandler;
+import com.elbloquecadena.storage.Settings;
 import com.google.protobuf.ByteString;
 
 /**
@@ -30,18 +33,24 @@ public class P2PClient {
 
     private Socket socket;
     private final String hostAddress;
-    private final int port;
+    private final int destinationPort;
 
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(3);
     private final MessagesHandler handler;
 
-    private final KeyPair keypair;
+    private KeyPair keypair;
+    private final Settings settings;
 
-    public P2PClient(String hostAddress, int port, KeyPair keypair, MessagesHandler handler) {
+    public P2PClient(String hostAddress, int port, Settings settings, MessagesHandler handler) {
         this.hostAddress = hostAddress;
-        this.port = port;
-        this.keypair = keypair;
+        this.destinationPort = port;
         this.handler = handler;
+        this.settings = settings;
+
+        try {
+            this.keypair = Crypto.makeKeyPair(settings.privatekey, settings.publickey);
+        } catch (CryptoException e) {
+        }
     }
 
     public Peer open() {
@@ -59,9 +68,9 @@ public class P2PClient {
         boolean result = false;
 
         while (i < times) {
-            System.out.println("connection try " + i + " -> " + hostAddress + ":" + port);
+            System.out.println("connection try " + i + " -> " + hostAddress + ":" + destinationPort);
             try {
-                socket = new Socket(hostAddress, port);
+                socket = new Socket(hostAddress, destinationPort);
                 socket.setSoLinger(true, 0);
                 scheduleTasks();
 
@@ -107,10 +116,11 @@ public class P2PClient {
             }
 
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
         try {
-            System.err.println("Closing Socket!!! + " + hostAddress + ":" + port);
+            System.err.println("Closing Socket!!! + " + hostAddress + ":" + destinationPort);
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,7 +131,11 @@ public class P2PClient {
 
         try {
             ByteString pubkey = ByteString.copyFrom(Crypto.compressedKey(keypair.getPublic()));
-            MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(this.port).setPubkey(pubkey).build();
+            MPeer myself = MPeer.newBuilder().setHost("localhost").setPort(settings.listenport).setPubkey(pubkey).build();
+
+            String bs = Base64.getEncoder().encodeToString(pubkey.toByteArray());
+
+            System.err.println("Sending Hello: " + this.destinationPort + " pub:" + bs);
 
             Builder hello = MsgHello.newBuilder().setMyself(myself);
 
@@ -141,7 +155,17 @@ public class P2PClient {
         try {
             MsgPing ping = MsgPing.newBuilder().setMsgid(Crypto.randomString(15)).build();
             Message m = Message.newBuilder().setPing(ping).build();
-            System.out.println("Sending Ping: " + ping.getMsgid());
+            m.writeDelimitedTo(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendPeerDiscovery() {
+        try {
+            MsgPeerDiscovery peerdisc = MsgPeerDiscovery.newBuilder().setMsgid(Crypto.randomString(15)).build();
+            System.err.println("sending peerdisc " + peerdisc.getMsgid() + " to " + socket.getInetAddress() + ":" + socket.getPort());
+            Message m = Message.newBuilder().setPeerdiscovery(peerdisc).build();
             m.writeDelimitedTo(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();

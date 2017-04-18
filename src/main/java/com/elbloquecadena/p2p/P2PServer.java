@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.elbloquecadena.messages.Messages.Message;
 import com.elbloquecadena.messages.Messages.MsgPing;
@@ -28,7 +27,7 @@ public class P2PServer {
 
     private final int serverPortNumber;
 
-    private final static AtomicInteger runningThreads = new AtomicInteger();
+    // private final static AtomicInteger runningThreads = new AtomicInteger();
 
     private List<SocketHandler> connectedPeers = new ArrayList<>();
 
@@ -63,11 +62,12 @@ public class P2PServer {
                     new Thread(handler).start();
                     serverSockets.add(serverSocket);
                     System.out.println("started new connection");
+                    System.out.println(serverEvents);
                     serverEvents.onClientConnectsToServer(clientSocket);
                 }
             }
         } catch (IOException e) {
-            // e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -106,12 +106,13 @@ public class P2PServer {
                 InputStream inStream = peer.getSocket().getInputStream();
                 while (continueLoop && !peer.getSocket().isClosed()) {
                     Message m = Message.parseDelimitedFrom(inStream);
-                    if (mHandler != null)
+                    //System.out.println("received m" + m + "   passing to mHandler:" + mHandler);
+                    if (mHandler != null) {
                         mHandler.onMessageReceived(m, peer.getSocket());
+                    }
                 }
             } catch (Exception e) {
-                // continueLoop = false;
-                // e.printStackTrace();
+                e.printStackTrace();
             }
             System.out.println("I was done reading anyway :-(");
         }
